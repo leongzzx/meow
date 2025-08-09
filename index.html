@@ -6,8 +6,14 @@
 <title>LoL Champions Selector</title>
 <style>
   body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  background: url('champselect.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white; /* optional, better contrast */
+}
   }
   #champion-grid {
     display: grid;
@@ -30,8 +36,8 @@
   .champion.selected {
     filter: none;
     opacity: 1;
-    border-color: gold;
-    box-shadow: 0 0 10px gold;
+    border-color: purple;
+    box-shadow: 0 0 10px pink;
   }
   #controls {
     margin-bottom: 15px;
