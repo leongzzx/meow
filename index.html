@@ -6,15 +6,15 @@
 <title>LoL Champions Selector</title>
 <style>
   body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 20px;
-  background: url('champselect.jpg') no-repeat center center fixed;
-  background-size: cover;
-  color: white; /* optional, better contrast */
-}
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background: url('champselect.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white; /* optional, better contrast */
   }
+
   #champion-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -53,6 +53,13 @@
     font-weight: bold;
     min-height: 24px;
   }
+  #random-image {
+    display: none;
+    max-width: 150px;
+    border-radius: 10px;
+    margin: 10px auto 0 auto; /* top margin and center horizontally */
+    display: block;
+  }
 </style>
 </head>
 <body>
@@ -64,9 +71,10 @@
   <button id="deselect-all-btn">Deselect All</button>
   <button id="random-btn">Pick a Random Champion</button>
 </div>
+
 <div id="random-output">
   <div id="random-text"></div>
-  <img id="random-image" alt="" style="margin-top: 10px; max-width: 150px; border-radius: 10px; display:none;" />
+  <img id="random-image" alt="" />
 </div>
 <div id="champion-grid"></div>
 
@@ -75,11 +83,10 @@
   const championGrid = document.getElementById("champion-grid");
   const searchInput = document.getElementById("search");
   const randomBtn = document.getElementById("random-btn");
-  const randomOutput = document.getElementById("random-output");
-  const selectAllBtn = document.getElementById("select-all-btn");
-  const deselectAllBtn = document.getElementById("deselect-all-btn");
   const randomText = document.getElementById("random-text");
   const randomImage = document.getElementById("random-image");
+  const selectAllBtn = document.getElementById("select-all-btn");
+  const deselectAllBtn = document.getElementById("deselect-all-btn");
 
   let selectedChamps = JSON.parse(localStorage.getItem("selectedChamps")) || [];
   let championElements = []; // will hold { id, element } for all champions
@@ -152,20 +159,20 @@
 
   // Random champion pick from selected
   randomBtn.addEventListener("click", () => {
-  if (selectedChamps.length === 0) {
-    randomText.textContent = "No champions selected!";
-    randomImage.style.display = "none";
-    return;
-  }
-  const randId = selectedChamps[Math.floor(Math.random() * selectedChamps.length)];
-  const champ = championElements.find(c => c.id === randId);
-  if (champ) {
-    randomText.textContent = `Random Champion: ${champ.element.alt}`;
-    randomImage.src = champ.element.src;
-    randomImage.alt = champ.element.alt;
-    randomImage.style.display = "block";
-  }
-});
+    if (selectedChamps.length === 0) {
+      randomText.textContent = "No champions selected!";
+      randomImage.style.display = "none";
+      return;
+    }
+    const randId = selectedChamps[Math.floor(Math.random() * selectedChamps.length)];
+    const champ = championElements.find(c => c.id === randId);
+    if (champ) {
+      randomText.textContent = `Random Champion: ${champ.element.alt}`;
+      randomImage.src = champ.element.src;
+      randomImage.alt = champ.element.alt;
+      randomImage.style.display = "block";
+    }
+  });
 </script>
 
 </body>
