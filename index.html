@@ -18,7 +18,7 @@ index.html
     #champion-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 10px;
+      gap: 16px;
       max-width: 1000px;
       margin: 20px auto;
     }
@@ -27,6 +27,17 @@ index.html
       border-radius: 8px;
       cursor: pointer;
       transition: 0.2s;
+      filter: grayscale(70%) brightness(0.8);
+      opacity: 0.6;
+    }
+
+    .champion.selected {
+      border-color: gold;
+      box-shadow: 0 0 10px gold;
+      filter: none;
+      opacity: 1;
+    }
+
     }
     .champion:hover {
       transform: scale(1.05);
