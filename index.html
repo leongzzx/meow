@@ -1,1 +1,104 @@
-index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoL Champion Selector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a0a0a;
+      color: #fff;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    #champion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 10px;
+      max-width: 1000px;
+      margin: 20px auto;
+    }
+    .champion {
+      border: 2px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .champion:hover {
+      transform: scale(1.05);
+    }
+    .selected {
+      border-color: gold;
+      box-shadow: 0 0 10px gold;
+    }
+    #search {
+      margin: 20px auto;
+      padding: 8px;
+      width: 200px;
+      border-radius: 4px;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>League of Legends Champion Selector</h1>
+  <input type="text" id="search" placeholder="Search champions...">
+  <div id="champion-grid"></div>
+
+  <script>
+    const grid = document.getElementById("champion-grid");
+    const search = document.getElementById("search");
+    const patch = "14.14.1"; // update if needed
+    let championElements = [];
+
+    // Load saved selections from localStorage
+    let selectedChamps = JSON.parse(localStorage.getItem("selectedChamps")) || [];
+
+    // Fetch champion data
+    fetch(`https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/champion.json`)
+      .then(res => res.json())
+      .then(data => {
+        const champs = Object.values(data.data);
+        champs.forEach(champ => {
+          const img = document.createElement("img");
+          img.src = `https://ddragon.leagueoflegends.com/cdn/${patch}/img/champion/${champ.image.full}`;
+          img.alt = champ.name;
+          img.title = champ.name;
+          img.classList.add("champion");
+
+          // Restore selection if saved
+          if (selectedChamps.includes(champ.id)) {
+            img.classList.add("selected");
+          }
+
+          img.addEventListener("click", () => {
+            img.classList.toggle("selected");
+
+            if (img.classList.contains("selected")) {
+              selectedChamps.push(champ.id);
+            } else {
+              selectedChamps = selectedChamps.filter(id => id !== champ.id);
+            }
+
+            // Save to localStorage
+            localStorage.setItem("selectedChamps", JSON.stringify(selectedChamps));
+          });
+
+          grid.appendChild(img);
+          championElements.push({ element: img, name: champ.name.toLowerCase() });
+        });
+      });
+
+    // Search filter
+    search.addEventListener("input", () => {
+      const term = search.value.toLowerCase();
+      championElements.forEach(champ => {
+        champ.element.style.display = champ.name.includes(term) ? "" : "none";
+      });
+    });
+  </script>
+</body>
+</html>
