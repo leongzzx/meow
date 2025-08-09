@@ -1,9 +1,8 @@
-index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LoL Champion Selector</title>
   <style>
     body {
@@ -18,52 +17,83 @@ index.html
     #champion-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-      gap: 16px;
+      gap: 20px;
       max-width: 1000px;
       margin: 20px auto;
     }
     .champion {
       border: 2px solid transparent;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       transition: 0.2s;
       filter: grayscale(70%) brightness(0.8);
       opacity: 0.6;
     }
-
-    .champion.selected {
-      border-color: gold;
-      box-shadow: 0 0 10px gold;
-      filter: none;
-      opacity: 1;
-    }
-
-    }
     .champion:hover {
       transform: scale(1.05);
     }
-    .selected {
-      border-color: gold;
-      box-shadow: 0 0 10px gold;
+    .champion.selected {
+      border-color: purple;
+      box-shadow: 0 0 10px pink;
+      filter: none;
+      opacity: 1;
+    }
+    .champion.random-picked {
+      border-color: deepskyblue;
+      box-shadow: 0 0 15px deepskyblue;
+      animation: pulse 1.5s infinite alternate;
+    }
+    @keyframes pulse {
+      from {
+        box-shadow: 0 0 10px deepskyblue;
+      }
+      to {
+        box-shadow: 0 0 20px deepskyblue;
+      }
     }
     #search {
-      margin: 20px auto;
+      margin: 20px auto 10px;
       padding: 8px;
       width: 200px;
       border-radius: 4px;
       border: none;
     }
+    #random-btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      border: none;
+      background-color: deepskyblue;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: background-color 0.3s;
+    }
+    #random-btn:hover {
+      background-color: dodgerblue;
+      color: #fff;
+    }
+    #random-output {
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      min-height: 24px;
+    }
   </style>
 </head>
 <body>
   <h1>League of Legends Champion Selector</h1>
-  <input type="text" id="search" placeholder="Search champions...">
+  <input type="text" id="search" placeholder="Search champions..." />
+  <br />
+  <button id="random-btn">Pick a Random Champion</button>
+  <div id="random-output"></div>
   <div id="champion-grid"></div>
 
   <script>
     const grid = document.getElementById("champion-grid");
     const search = document.getElementById("search");
-    const patch = "15.15.1"; // update if needed
+    const randomBtn = document.getElementById("random-btn");
+    const randomOutput = document.getElementById("random-output");
+    const patch = "15.15.1";
     let championElements = [];
 
     // Load saved selections from localStorage
@@ -71,10 +101,10 @@ index.html
 
     // Fetch champion data
     fetch(`https://ddragon.leagueoflegends.com/cdn/${patch}/data/en_US/champion.json`)
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         const champs = Object.values(data.data);
-        champs.forEach(champ => {
+        champs.forEach((champ) => {
           const img = document.createElement("img");
           img.src = `https://ddragon.leagueoflegends.com/cdn/${patch}/img/champion/${champ.image.full}`;
           img.alt = champ.name;
@@ -92,24 +122,63 @@ index.html
             if (img.classList.contains("selected")) {
               selectedChamps.push(champ.id);
             } else {
-              selectedChamps = selectedChamps.filter(id => id !== champ.id);
+              selectedChamps = selectedChamps.filter((id) => id !== champ.id);
             }
 
-            // Save to localStorage
             localStorage.setItem("selectedChamps", JSON.stringify(selectedChamps));
           });
 
           grid.appendChild(img);
-          championElements.push({ element: img, name: champ.name.toLowerCase() });
+          championElements.push({ element: img, name: champ.name.toLowerCase(), id: champ.id });
         });
       });
 
     // Search filter
     search.addEventListener("input", () => {
       const term = search.value.toLowerCase();
-      championElements.forEach(champ => {
+      championElements.forEach((champ) => {
         champ.element.style.display = champ.name.includes(term) ? "" : "none";
       });
+      clearRandomPick();
+    });
+
+    // Clear any previous random highlight
+    function clearRandomPick() {
+      randomOutput.textContent = "";
+      championElements.forEach((champ) => {
+        champ.element.classList.remove("random-picked");
+      });
+    }
+
+    // Pick random champion from visible champions
+    randomBtn.addEventListener("click", () => {
+      clearRandomPick();
+
+      // Get visible champions
+      const visibleChamps = championElements.filter(
+        (champ) => champ.element.style.display !== "none"
+      );
+
+      if (visibleChamps.length === 0) {
+        randomOutput.textContent = "No champions to pick from!";
+        return;
+      }
+
+      // Pick random
+      const pick = visibleChamps[Math.floor(Math.random() * visibleChamps.length)];
+
+      // Highlight the chosen champion
+      pick.element.classList.add("random-picked");
+
+      // Show chosen name
+      randomOutput.textContent = `Random Pick: ${pick.element.alt}`;
+
+      // Optionally, select it if not selected already
+      if (!pick.element.classList.contains("selected")) {
+        pick.element.classList.add("selected");
+        selectedChamps.push(pick.id);
+        localStorage.setItem("selectedChamps", JSON.stringify(selectedChamps));
+      }
     });
   </script>
 </body>
