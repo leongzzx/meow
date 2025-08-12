@@ -218,12 +218,28 @@ const laneText = document.getElementById("lane-text");
 const laneImage = document.getElementById("lane-image");
 
 const lanes = [
-  { name: "Top", icon: "https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Assets/master/role-icons/top.png" },
-  { name: "Jungle", icon: "https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Assets/master/role-icons/jungle.png" },
-  { name: "Mid", icon: "https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Assets/master/role-icons/middle.png" },
-  { name: "ADC", icon: "https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Assets/master/role-icons/bottom.png" },
-  { name: "Support", icon: "https://raw.githubusercontent.com/RiotAPI/Riot-Games-API-Assets/master/role-icons/utility.png" }
+  {
+    name: "Top",
+    icon: "https://static.wikia.nocookie.net/leagueoflegends/images/<path>/Top_icon.png"
+  },
+  {
+    name: "Jungle",
+    icon: "https://static.wikia.nocookie.net/leagueoflegends/images/<path>/Jungle_icon.png"
+  },
+  {
+    name: "Mid",
+    icon: "https://static.wikia.nocookie.net/leagueoflegends/images/<path>/Mid_icon.png"
+  },
+  {
+    name: "ADC",
+    icon: "https://static.wikia.nocookie.net/leagueoflegends/images/<path>/Marksman_icon.png"
+  },
+  {
+    name: "Support",
+    icon: "https://static.wikia.nocookie.net/leagueoflegends/images/<path>/Support_icon.png"
+  }
 ];
+
 
 randomLaneBtn.addEventListener("click", () => {
   const lane = lanes[Math.floor(Math.random() * lanes.length)];
