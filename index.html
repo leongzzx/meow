@@ -82,14 +82,12 @@
   display: none;
   max-width: 150px;
   border-radius: 10px;
-  margin: 10px auto 0 auto;
   display: block;
 }
 
 #lane-image {
   display: none;
   max-width: 80px;
-  margin: 10px auto 0 auto;
   display: block;
 }
 </style>
@@ -107,11 +105,9 @@
 
 <div id="random-container">
   <div class="random-box">
-    <div id="random-text"></div>
     <img id="random-image" alt="" />
   </div>
   <div class="random-box">
-    <div id="lane-text"></div>
     <img id="lane-image" alt="" />
   </div>
 </div>
@@ -199,20 +195,19 @@
 
   // Random champion pick from selected
   randomBtn.addEventListener("click", () => {
-    if (selectedChamps.length === 0) {
-      randomText.textContent = "No champions selected!";
-      randomImage.style.display = "none";
-      return;
-    }
-    const randId = selectedChamps[Math.floor(Math.random() * selectedChamps.length)];
-    const champ = championElements.find(c => c.id === randId);
-    if (champ) {
-      randomText.textContent = `Random Champion: ${champ.element.alt}`;
-      randomImage.src = champ.element.src;
-      randomImage.alt = champ.element.alt;
-      randomImage.style.display = "block";
-    }
-  });
+  if (selectedChamps.length === 0) {
+    randomImage.style.display = "none";
+    return;
+  }
+  const randId = selectedChamps[Math.floor(Math.random() * selectedChamps.length)];
+  const champ = championElements.find(c => c.id === randId);
+  if (champ) {
+    randomImage.src = champ.element.src;
+    randomImage.alt = champ.element.alt;
+    randomImage.style.display = "block";
+  }
+});
+
     const randomLaneBtn = document.getElementById("random-lane-btn");
 const laneText = document.getElementById("lane-text");
 const laneImage = document.getElementById("lane-image");
