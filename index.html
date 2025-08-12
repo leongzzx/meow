@@ -209,7 +209,6 @@
 });
 
     const randomLaneBtn = document.getElementById("random-lane-btn");
-const laneText = document.getElementById("lane-text");
 const laneImage = document.getElementById("lane-image");
 
 const lanes = [
@@ -224,7 +223,6 @@ const lanes = [
 
 randomLaneBtn.addEventListener("click", () => {
   const lane = lanes[Math.floor(Math.random() * lanes.length)];
-  laneText.textContent = `Random Lane: ${lane.name}`;
   laneImage.src = lane.icon;
   laneImage.alt = lane.name;
   laneImage.style.display = "block";
