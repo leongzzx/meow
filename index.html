@@ -66,6 +66,32 @@
   margin: 10px auto 0 auto;
   display: block;
   }
+  #random-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 15px;
+}
+
+.random-box {
+  text-align: center;
+}
+
+#random-image {
+  display: none;
+  max-width: 150px;
+  border-radius: 10px;
+  margin: 10px auto 0 auto;
+  display: block;
+}
+
+#lane-image {
+  display: none;
+  max-width: 80px;
+  margin: 10px auto 0 auto;
+  display: block;
+}
 </style>
 </head>
 <body>
@@ -79,12 +105,15 @@
   <button id="random-lane-btn">Pick a Random Lane</button>
 </div>
 
-<div id="random-output">
-  <div id="random-text"></div>
-  <img id="random-image" alt="" />
-  <div id="random-lane-output">
-  <div id="lane-text"></div>
-  <img id="lane-image" alt="" />
+<div id="random-container">
+  <div class="random-box">
+    <div id="random-text"></div>
+    <img id="random-image" alt="" />
+  </div>
+  <div class="random-box">
+    <div id="lane-text"></div>
+    <img id="lane-image" alt="" />
+  </div>
 </div>
 </div>
 <div id="champion-grid"></div>
